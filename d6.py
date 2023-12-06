@@ -9,10 +9,6 @@ lines = utils.parse("d6.txt")
 
 @utils.measure
 def run():
-
-    seeds = []
-    mappings = []
-
     times = [int(elem) for elem in (lines[0].split()[1:])]
     distances = [int(elem) for elem in (lines[1].split()[1:])]
 
