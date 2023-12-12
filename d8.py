@@ -43,7 +43,6 @@ def run(lines):
             current_nodes[i] = graph[current_nodes[i]][0] if instructions[n_moves[i]%n_instructions] == 'L' else graph[current_nodes[i]][1]
             n_moves[i] += 1
 
-    print(n_moves)
     moves2 = math.lcm(*n_moves)
 
     print(f'Part 1: {moves}')
