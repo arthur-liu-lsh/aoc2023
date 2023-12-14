@@ -95,7 +95,7 @@ def run(lines: List[str]):
         if state_start in states:
             len_cycle = k - states[state_start]
             if (1000000000 - k) % len_cycle == 0:
-                print(count_points(state_move, n))
+                result2 = count_points(state_start, n)
                 break
         states[state_start] = k
 
