@@ -38,18 +38,18 @@ def run(lines: List[str]):
     for word in words:
         elems = word.split('=')
         if len(elems) == 2:
-            lens = elems[0]
+            name = elems[0]
             lens = int(elems[1])
-            box_id = get_hash(lens)
+            box_id = get_hash(name)
             if box_id not in boxes:
                 boxes[box_id] = {}
-            boxes[box_id][lens] = lens
+            boxes[box_id][name] = lens
         else:
-            lens = elems[0][:-1]
-            box_id = get_hash(lens)
+            name = elems[0][:-1]
+            box_id = get_hash(name)
             if box_id in boxes:
-                if lens in boxes[box_id]:
-                    boxes[box_id].pop(lens)
+                if name in boxes[box_id]:
+                    boxes[box_id].pop(name)
 
     for box_id in boxes:
         for order, lens in enumerate(boxes[box_id].values()):
