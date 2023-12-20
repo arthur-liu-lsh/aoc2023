@@ -149,15 +149,12 @@ def run(lines: List[str]):
         if k % 100000 == 0:
             print("iter", k)
         counter[False] += 1
-        rx_counter = 0
         if stop:
             break
         while len(queue) != 0:
             target, origin, signal = queue.popleft()
             if target in world:
                 world[target].update(origin, signal)
-            if target == 'rx' and signal == False:
-                rx_counter += 1
             rs_state = world['rs'].get_state()
             if any(rs_state):
                 if rs_counter[0] is None and rs_state[0]:
@@ -171,9 +168,6 @@ def run(lines: List[str]):
         if k == 1000:
             result1 = counter[True] * counter[False]
 
-        if rx_counter == 1:
-            print(k)
-            break
 
     result2 = lcm(*rs_counter)
 
