@@ -28,14 +28,14 @@ def neighbours(array, i, j, n, m):
 
 def neighbours2(array, i, j, n, m):
     adj = []
-    if array[((i+1)%n,j)] != 1:
-        adj.append(((i+1)%n,j))
-    if array[((i-1)%n,j)] != 1:
-        adj.append(((i-1)%n,j))
-    if array[(i,(j+1)%m)] != 1:
-        adj.append((i,(j+1)%m))
-    if array[(i,(j-1)%m)] != 1:
-        adj.append((i,(j-1)%m))
+    if array[((i+1)%n,j%m)] != 1:
+        adj.append((i+1,j))
+    if array[((i-1)%n,j%m)] != 1:
+        adj.append((i-1,j))
+    if array[(i%n,(j+1)%m)] != 1:
+        adj.append((i,j+1))
+    if array[(i%n,(j-1)%m)] != 1:
+        adj.append((i,j-1))
     return adj
 
 def hamming(i1,j1,i2,j2):
@@ -63,6 +63,7 @@ def run(lines: List[str]):
 
     coords = set()
     coords.add(startpos)
+    
 
     for _ in range(64):
         new_coords = set()
@@ -72,31 +73,35 @@ def run(lines: List[str]):
         coords = new_coords
     result1 = len(coords)
 
-    coords = dict()
-    coords[startpos] = 1
+    coords = set()
+    coords.add(startpos)
 
-    # for _ in range(10):
-    #     new_coords = dict()
-    #     for i, j in coords:
-    #         for ii, jj in neighbours2(world, i, j, n, m):
-    #             if hamming(i, j, ii, jj) == 1:
-    #                 if (ii, jj) not in new_coords:
-    #                     new_coords[(ii, jj)] = coords[(i,j)]
-    #             else:
-    #                 if (ii, jj) not in new_coords:
-    #                     new_coords[(ii, jj)] = coords[(i,j)]
-    #                 else:
-    #                     new_coords[((ii, jj))] += coords[(i,j)]
-    #     coords = new_coords
-    #     print(sum(coords.values()))
-    # result2 = sum(coords.values())
+    X = []
+    Y = []
 
+    print(startpos)
 
+    for _ in range(65):
+        new_coords = set()
+        for i,j in coords:
+            for ii,jj in neighbours2(world, i, j, n, m):
+                new_coords.add((ii,jj))
+        coords = new_coords
 
-    plt.figure()
-    plt.imshow(world)
-    plt.scatter([i for i, j in new_coords], [j for i, j in new_coords])
-    plt.show()
+    for iter in range(1, 4):
+        for _ in range(131):
+            new_coords = set()
+            for i,j in coords:
+                for ii,jj in neighbours2(world, i, j, n, m):
+                    new_coords.add((ii,jj))
+            coords = new_coords
+        X.append(iter)
+        Y.append(len(coords))
+
+    k = (26501365 - 65) // 131
+    model = np.poly1d(np.polyfit(X, Y, 2))
+
+    result2 = round(model(k))
 
     print(f'Part 1: {result1}')
     print(f'Part 2: {result2}')
